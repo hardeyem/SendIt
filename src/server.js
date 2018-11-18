@@ -13,6 +13,9 @@ import { apiRoutes } from './api/v1/api-routes';
 
 debug('SendIt:server');
 
+console.log('okay worked tho');
+
+
 /**
  * Get port from environment and store in Express.
  */
