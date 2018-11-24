@@ -55,12 +55,29 @@ export const getParcelById = (req, res, next) => {
 
 export const cancelParcel = (req, res, next) => {
 	if (req.params.id) {
-		ParcelProvider.changeParcelStatus(req.params.id, "canceled", (err, parcels) => {
+
+		ParcelProvider.getParcelById(req.params.id, (err, parcels) => {
 			if (err) return next();
-			if (parcels) {
-				return Utility.sendSuccessResponse(res, {id: req.params.id, message: "order canceled"}, statusCode.UPDATED);
-			} else {
-				return Utility.sendErrorResponse(res, {}, "Oops! something went wrong", statusCode.ERROR);
+
+			console.log(parcels);
+			let parcel = parcels[0];
+
+			if (parcel) {
+				if (parcel.placedby !== req.payload.id) {
+					return Utility.sendErrorResponse(res, {}, "You cannot cancel this this order", statusCode.UNAUTHORIZED);
+				}
+
+				ParcelProvider.changeParcelStatus(req.params.id, "canceled", (err, parcels) => {
+					if (err) return next();
+					if (parcels) {
+						return Utility.sendSuccessResponse(res, {id: req.params.id, message: "order canceled"}, statusCode.UPDATED);
+					} else {
+						return Utility.sendErrorResponse(res, {}, "Oops! something went wrong", statusCode.ERROR);
+					}
+				});
+
+			} else{
+				return Utility.sendErrorResponse(res, {}, "Order not found", statusCode.ERROR);
 			}
 		});
 	} else {

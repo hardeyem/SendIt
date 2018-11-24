@@ -38,9 +38,9 @@ export class User {
     const expiry = new Date();
     expiry.setDate(expiry.getDate() + 7);//expire in seven days
     return sign({
-      fullName: `${this.firstname} ${this.lastname}`,
       username: this.username,
       isAdmin: this.isadmin,
+      id: this.id,
       exp: expiry.getTime()
     }, process.env.AUTH_SECRET);
   }
