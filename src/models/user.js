@@ -14,14 +14,14 @@ export class User {
     this.othernames = user.othernames;
     this.email = user.email;
     this.username = user.username;
-    this.isAdmin = user.isAdmin;
+    this.isadmin = user.isadmin;
     this.hash = user.hash || '';
     this.salt = user.salt || '';
     this.registered = user.registered || '';
   }
 
   toArrayValue() {
-    return [this.firstname, this.lastname, this.othernames, this.email, this.username, this.isAdmin, this.salt, this.hash];
+    return [this.firstname, this.lastname, this.othernames, this.email, this.username, this.isadmin, this.salt, this.hash];
   }
 
   setPassword(password) {
@@ -40,6 +40,7 @@ export class User {
     return sign({
       fullName: `${this.firstname} ${this.lastname}`,
       username: this.username,
+      isAdmin: this.isadmin,
       exp: expiry.getTime()
     }, process.env.AUTH_SECRET);
   }

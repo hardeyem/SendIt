@@ -33,10 +33,10 @@ export class Parcel {
 
   createParcel(callback){
 
-		const sql = 'INSERT INTO parcels(placedby, weight, weightmetric, fromlocation, tolocation, currentlocation) VALUES($1, $2, $3, $4, $5, $6) RETURNING id';
-		const values = this.toArray();
-		console.log(sql);
-		console.log(values);
+    const sql = 'INSERT INTO parcels(placedby, weight, weightmetric, fromlocation, tolocation, currentlocation) VALUES($1, $2, $3, $4, $5, $6) RETURNING id';
+    const values = this.toArray();
+    console.log(sql);
+    console.log(values);
 
     connect((err, client, close) => {
       if(err) return callback(err, null);

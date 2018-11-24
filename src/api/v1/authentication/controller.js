@@ -17,7 +17,7 @@ export let registerUser = (req, res, next) => {
     {name : 'othernames', type: 'string'},
     {name : 'email', type: 'string'},
     {name : 'username', type: 'string'},
-    {name : 'isAdmin', type: 'boolean'},
+    {name : 'isadmin', type: 'boolean'},
     {name : 'password', type: 'string'},
   ];
 
@@ -34,20 +34,18 @@ export let registerUser = (req, res, next) => {
     console.log(values);
 
     connect((err, client, done) => {
-      if(err) return Utility.sendErrorResponse(res, body, 'Oops! Something went wrong', statusCode.ERROR);
+      if(err) return Utility.sendErrorResponse(res, body, 'Oops! Something went wrong.', statusCode.ERROR);
       console.log(sql);
       client.query(sql, values).then(result => {
         done();
         console.log(result);
-        const token = newUser.generateJWT();
-
         authenticate(req, res);
 
         // return Utility.sendSuccessResponse(res, {user: body, token}, statusCode.SUCCESS);
       }).catch(e => {
         done();
         console.log(e.stack);
-        return Utility.sendErrorResponse(res, body, 'Oops! Something went wrong', statusCode.ERROR);
+        return Utility.sendErrorResponse(res, body, 'Oops! username or email is taken', statusCode.ERROR);
       });
     });
   }else{
