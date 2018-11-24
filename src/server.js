@@ -1,5 +1,5 @@
-
-require('dotenv').load();
+import {load} from 'dotenv';
+load();
 import debug from 'debug';
 import http from 'http';
 import createError from 'http-errors';
@@ -8,13 +8,25 @@ import path from 'path';
 import cookieParser from 'cookie-parser';
 import logger from 'morgan';
 import compression from 'compression';
+import passport from 'passport';
 
 import { apiRoutes } from './api/v1/api-routes';
+import {connect} from './models/db';
+import {userPassport} from './helpers/passport';
 
 debug('SendIt:server');
 
-console.log('okay worked tho');
+// do db connection test
+connect((err, client, done) => {
+  done(); //close the connection
+  if(err){
+    console.log('Can not connect to database check your configuration');
+  } else{
+    console.log('Database connected');
+  }
+});
 
+userPassport();
 
 /**
  * Get port from environment and store in Express.
@@ -46,6 +58,9 @@ app.use(function (req, res, next) {
 
   next();
 });
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 
 /**

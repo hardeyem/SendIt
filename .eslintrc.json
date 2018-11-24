@@ -32,7 +32,9 @@
       "event",
       "fdescribe"
     ],
-    "no-console": "off"
+    "no-console": "off",
+    "no-unused-vars" : "warn",
+    "no-undef" : "warn"
   },
   "globals": {
     "require": true,
